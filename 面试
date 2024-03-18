@@ -1,0 +1,68 @@
+第一题：
+数据库表结构设计
+商品表（products）
+
+id: 商品唯一标识 (主键)
+name: 商品名称
+specification: 商品规格
+price: 商品单价
+created_at: 商品录入时间
+门店表（stores）
+
+id: 门店唯一标识 (主键)
+name: 门店名称
+address: 门店地址
+phone: 门店联系电话
+台账表（ledger）
+
+id: 台账唯一标识 (主键)
+transaction_type: 交易类型（入库/出库）
+product_id: 商品唯一标识（外键关联商品表）
+store_id: 门店唯一标识（外键关联门店表）
+quantity: 交易数量
+transaction_amount: 交易金额
+transaction_date: 交易日期
+
+
+接口实现
+商品模块接口
+1.新增商品接口
+@PostMapping("/products")
+public ResponseEntity<Object> addProduct(@RequestBody Product product) {
+    // 实现新增商品逻辑
+}
+2.修改商品接口
+@PutMapping("/products/{productId}")
+public ResponseEntity<Object> updateProduct(@PathVariable Long productId, @RequestBody Product product) {
+    // 根据productId和product内容进行商品更新
+}
+
+3.删除商品接口
+@DeleteMapping("/products/{productId}")
+public ResponseEntity<Object> deleteProduct(@PathVariable Long productId) {
+    // 根据productId删除商品
+}
+4.商品入库接口
+@PostMapping("/ledger/inbound")
+public ResponseEntity<Object> inboundProduct(@RequestBody LedgerEntry entry) {
+    // 实现商品入库逻辑，并返回指定门店的商品现存数量
+}
+5.商品出库接口
+@PostMapping("/ledger/outbound")
+public ResponseEntity<Object> outboundProduct(@RequestBody LedgerEntry entry) {
+    // 实现商品出库逻辑，并返回指定门店的商品现存数量
+}
+6.商品入库流水查询接口
+@GetMapping("/ledger/inbound-history")
+public ResponseEntity<Object> getInboundHistory(@RequestParam(required = false) String productName,
+                                                 @RequestParam(required = false) Date startDate,
+                                                 @RequestParam int page,
+                                                 @RequestParam int pageSize) {
+    // 实现根据商品名称和入库日期范围查询入库流水并分页返回的逻辑
+}
+7.统计特定商品接口
+@GetMapping("/ledger/product-statistics")
+public ResponseEntity<Object> getProductStatistics(@RequestParam Long productId) {
+    // 实现统计特定商品库存和总价的逻辑
+}
+
