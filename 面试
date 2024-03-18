@@ -29,23 +29,22 @@ transaction_date: 交易日期
 1.新增商品接口
 @PostMapping("/products")
 public ResponseEntity<Object> addProduct(@RequestBody Product product) {
-    // 实现新增商品逻辑
+    
 }
 2.修改商品接口
 @PutMapping("/products/{productId}")
 public ResponseEntity<Object> updateProduct(@PathVariable Long productId, @RequestBody Product product) {
-    // 根据productId和product内容进行商品更新
-}
+   
 
 3.删除商品接口
 @DeleteMapping("/products/{productId}")
 public ResponseEntity<Object> deleteProduct(@PathVariable Long productId) {
-    // 根据productId删除商品
+   
 }
 4.商品入库接口
 @PostMapping("/ledger/inbound")
 public ResponseEntity<Object> inboundProduct(@RequestBody LedgerEntry entry) {
-    // 实现商品入库逻辑，并返回指定门店的商品现存数量
+   
 }
 5.商品出库接口
 @PostMapping("/ledger/outbound")
@@ -58,11 +57,51 @@ public ResponseEntity<Object> getInboundHistory(@RequestParam(required = false) 
                                                  @RequestParam(required = false) Date startDate,
                                                  @RequestParam int page,
                                                  @RequestParam int pageSize) {
-    // 实现根据商品名称和入库日期范围查询入库流水并分页返回的逻辑
+  
 }
 7.统计特定商品接口
 @GetMapping("/ledger/product-statistics")
 public ResponseEntity<Object> getProductStatistics(@RequestParam Long productId) {
-    // 实现统计特定商品库存和总价的逻辑
+    
 }
 
+第二题
+实体层
+public class Message {
+    private Long id;
+    private Long productId;
+    private Date outboundTime;
+    private String content;
+    private Boolean readStatus;
+}
+
+
+1.消息推送
+@PostMapping("/messages/push")
+public ResponseEntity<Object> pushMessage(@RequestBody Message message) {
+  
+}
+
+2.消息列表（分页）
+@GetMapping("/messages")
+public ResponseEntity<Object> getMessageList(@RequestParam(required = false) Date beforeOutboundTime,
+                                              @RequestParam(required = false) Date afterOutboundTime,
+                                              @RequestParam int page,
+                                              @RequestParam int pageSize) {
+   
+}
+
+3.读取消息
+@PutMapping("/messages/{messageId}/read")
+public ResponseEntity<Object> readMessage(@PathVariable Long messageId) {
+    // 实现读取消息功能，修改消息的阅读状态
+}
+
+4.短信发送任务调度
+ public void sendUnreadMessageSMS() {
+
+        List<Message> unreadMessages = messageRepository.findUnreadMessagesOver3Hours();
+        for (Message message : unreadMessages) {
+            String content = "您有一条来自仓库管理系统的未读消息，请及时查看！";
+            smsService.sendSMS("adminPhoneNumber", content); 
+        }
